@@ -378,6 +378,16 @@ html.anim .final-text > *{opacity:0}
   -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
 }
 .music-toggle svg{width:24px;height:24px;overflow:visible}
+.music-hint{
+  position:fixed; z-index:30; top:calc(var(--safe-t) + 18px); right:calc(env(safe-area-inset-right, 0px) + 70px);
+  min-height:38px; padding:0 16px; border-radius:999px; cursor:pointer;
+  font-family:var(--sans); font-size:.9375rem; font-weight:500; color:var(--cream);
+  background:var(--bota); border:1px solid rgba(217,188,126,.7);
+  box-shadow:0 8px 20px -10px rgba(30,52,40,.6);
+}
+.music-hint[hidden]{display:none}
+html.anim .music-hint{animation:hintIn .5s ease both}
+@keyframes hintIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
 .music-toggle .slash-bg{stroke:var(--btn-bg)}
 .music-toggle .slash,.music-toggle .slash-bg{transition:opacity .3s ease}
 .music-toggle[aria-pressed="true"] .slash,.music-toggle[aria-pressed="true"] .slash-bg{opacity:0}
@@ -466,6 +476,8 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     <path class="slash" d="M3.6 3.6 20.4 20.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
   </svg>
 </button>
+
+<button id="music-hint" class="music-hint" type="button" hidden>Touchez pour reprendre la musique</button>
 
 <!-- Musique de fond : fichier fourni, lu en boucle -->
 <audio id="bgm" preload="none" loop playsinline>
@@ -1899,13 +1911,15 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
      Musique de fond
      ====================================================================== */
   const Music = {
-    audio: $('#bgm'), btn: $('#music-toggle'), enter: $('#enter-music'), label: $('#enter-label'),
+    audio: $('#bgm'), btn: $('#music-toggle'), enter: $('#enter-music'), label: $('#enter-label'), hint: $('#music-hint'),
     KEY: 'jardin-des-maries:musique',
-    wants: false, resume: false, fadeId: 0, busy: false, broken: false,
+    wants: false, fadeId: 0, stopping: false, broken: false, armed: null,
     canVolume: (() => { try { const a = document.createElement('audio'); a.volume = 0.5; return Math.abs(a.volume - 0.5) < 0.01; } catch (_) { return false; } })(),
     read() { try { return localStorage.getItem(this.KEY); } catch (_) { return null; } },
     save(v) { try { localStorage.setItem(this.KEY, v); } catch (_) {} },
-    ui(on) {
+    // L’affichage suit toujours l’état réel du lecteur
+    ui() {
+      const on = !this.audio.paused && !this.stopping;
       this.btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       this.btn.setAttribute('aria-label', on ? 'Couper la musique' : 'Activer la musique');
       this.label.textContent = on ? 'Entrer dans notre jardin' : 'Touchez pour entrer dans notre jardin en musique';
@@ -1923,23 +1937,52 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     },
     async play(ms) {
       const a = this.audio;
-      if (this.broken || this.busy) return false;
-      if (!a.paused) { this.ui(true); this.fade(MUSIC.volume, 600); return true; }
-      this.busy = true;
+      this.stopping = false;
+      this.disarm();
+      if (!a.paused) { this.ui(); this.fade(MUSIC.volume, 600); return true; }
       try {
+        if (a.error) a.load();
         if (this.canVolume) a.volume = 0;
         await a.play();
-        this.ui(true);
+        this.broken = false;
+        this.ui();
         this.fade(MUSIC.volume, ms);
         return true;
       } catch (_) {
-        this.ui(false);
+        this.ui();
         return false;
-      } finally { this.busy = false; }
+      }
     },
     stop() {
-      this.ui(false);
-      this.fade(0, 450, () => { this.audio.pause(); if (this.canVolume) this.audio.volume = MUSIC.volume; });
+      this.stopping = true;
+      this.disarm();
+      this.ui();
+      this.fade(0, 450, () => {
+        if (this.stopping) { this.audio.pause(); this.stopping = false; }
+        if (this.canVolume) this.audio.volume = MUSIC.volume;
+        this.ui();
+      });
+    },
+    // Retour sur la carte : on relance si le navigateur l’autorise ; sinon, le prochain toucher la relance
+    resumeAfterReturn() {
+      if (!this.wants || !this.audio.paused) { this.ui(); return; }
+      this.play(1200).then(ok => { if (!ok) this.arm(); });
+    },
+    arm() {
+      if (this.armed) return;
+      this.hint.hidden = false;
+      this.armed = e => {
+        if (e && e.target && e.target.closest && e.target.closest('#music-toggle')) return; // le bouton gère lui-même
+        if (this.wants && this.audio.paused) this.play(1200);
+        else this.disarm();
+      };
+      ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, this.armed, true));
+    },
+    disarm() {
+      if (this.hint) this.hint.hidden = true;
+      if (!this.armed) return;
+      ['click', 'touchend', 'keydown'].forEach(ev => document.removeEventListener(ev, this.armed, true));
+      this.armed = null;
     },
     init() {
       const a = this.audio;
@@ -1949,30 +1992,27 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
       a.addEventListener('timeupdate', () => {
         if (a.duration && MUSIC.loopEnd < a.duration - 0.2 && a.currentTime >= MUSIC.loopEnd) a.currentTime = 0;
       });
-      a.addEventListener('play', () => this.ui(true));
-      a.addEventListener('pause', () => { if (!this.resume) this.ui(false); });
-      a.addEventListener('error', () => { this.broken = true; this.ui(false); this.btn.title = 'Musique indisponible'; }, true);
+      ['play', 'playing', 'pause'].forEach(ev => a.addEventListener(ev, () => this.ui()));
+      a.addEventListener('error', () => { this.broken = true; this.ui(); this.btn.title = 'Musique indisponible'; }, true);
       this.btn.addEventListener('click', () => {
-        if (this.btn.getAttribute('aria-pressed') === 'true') { this.wants = false; this.save('off'); this.stop(); }
+        if (!a.paused && !this.stopping) { this.wants = false; this.save('off'); this.stop(); }
         else { this.wants = true; this.save('on'); this.play(MUSIC.fadeInMs); }
       });
+      this.hint.addEventListener('click', () => { this.wants = true; this.save('on'); this.play(1200); });
       this.enter.addEventListener('click', () => {
-        if (a.paused) { this.wants = true; this.save('on'); this.play(MUSIC.fadeInMs); }
+        if (a.paused || this.stopping) { this.wants = true; this.save('on'); this.play(MUSIC.fadeInMs); }
         glideInto();
       });
-      const hide = () => { if (!a.paused) { this.resume = true; cancelAnimationFrame(this.fadeId); a.pause(); } };
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) hide();
-        else if (this.resume) {
-          this.resume = false;
-          if (this.wants) this.play(1200); else this.ui(false);
-        }
-      });
+      // Page quittée (Google Maps, WhatsApp…) : pause ; retour : reprise
+      const hide = () => { cancelAnimationFrame(this.fadeId); if (!a.paused) a.pause(); this.stopping = false; };
+      document.addEventListener('visibilitychange', () => { if (document.hidden) hide(); else this.resumeAfterReturn(); });
       window.addEventListener('pagehide', hide);
+      window.addEventListener('pageshow', e => { if (e.persisted) this.resumeAfterReturn(); });
+      window.addEventListener('focus', () => { if (!document.hidden && this.wants && a.paused && !this.armed) this.resumeAfterReturn(); });
       if ('mediaSession' in navigator && window.MediaMetadata) {
         try { navigator.mediaSession.metadata = new MediaMetadata({ title: 'Le Jardin des Mariés', artist: 'Chantal & Joseph Marcel' }); } catch (_) {}
       }
-      this.ui(false);
+      this.ui();
     }
   };
 
