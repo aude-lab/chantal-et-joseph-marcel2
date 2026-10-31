@@ -1,6 +1,6 @@
-# Le Jardin des Mariés — Chantal & Joseph Marcel · 26.12.2026
+# Le Jardin des Mariés — Joseph Marcel & Chantal · 26.12.2026
 
-Invitation de mariage interactive sur une seule feuille vert sauge poudré (#B8CBB5) : un jardin ivoire et doré qui s’épanouit au fil du défilement, la silhouette des mariés dessinée à l’encre dorée qui danse un slow en arrière-plan, des fleurs naturelles colorées (roses poudrées, pêche, mauves et jaunes, lavande, myosotis), sur la musique *Dandelions (Violin)*.
+Invitation de mariage interactive sur une seule feuille vert sauge poudré (#B8CBB5) : un jardin ivoire et doré qui s’épanouit au fil du défilement, la silhouette des mariés dessinée à l’encre dorée qui danse un slow en arrière-plan, des fleurs naturelles colorées (roses poudrées, pêche, mauves et jaunes, lavande, myosotis), sur la musique *Halo* (reprise de Caleb Chan & Brian Chan).
 
 ## Structure du projet
 
@@ -10,7 +10,7 @@ jardin-des-maries/
 ├── vercel.json                     ← en-tête « noindex » (invitation privée)
 ├── LISEZ-MOI.md
 └── assets/
-    ├── audio/musique-mariage.mp3   ← votre fichier, copié à l’identique (MP3 128 kbit/s, 3 min 28)
+    ├── audio/musique-mariage.mp3   ← votre fichier, copié à l’identique (MP3 192 kbit/s, 2 min 54)
     └── img/
         ├── couple-*.webp           ← silhouette dorée découpée en 7 calques animés (≈ 500 Ko au total)
         └── apercu-whatsapp.jpg     ← image d’aperçu du lien dans WhatsApp (1200 × 630)
@@ -34,7 +34,7 @@ Réglages facultatifs (objet `MUSIC`, en haut du script) :
 
 - `volume: 0.55` — volume par défaut (0 à 1).
 - `fadeInMs: 2600` — durée du fondu d’entrée.
-- `loopEnd: 205.6` — le fichier se termine par environ 3 s de silence ; la musique repart au début juste avant pour éviter un « trou ». Si vous changez de musique, ce réglage se désactive tout seul quand le nouveau fichier est plus court.
+- `loopStart: 0.55` et `loopEnd: 170.4` — le fichier commence par 0,6 s et finit par environ 3 s de silence ; la boucle saute ces silences. Si vous changez de musique, `loopEnd` se désactive tout seul quand le nouveau fichier est plus court.
 
 ---
 
@@ -53,8 +53,8 @@ Puis ouvrez <http://localhost:8000>.
 
 À vérifier sur un vrai iPhone et un vrai Android avant l’envoi aux invités :
 
-1. Le bouton « Touchez pour entrer dans notre jardin en musique » lance la musique et fait glisser doucement vers le jardin.
-2. Le bouton rond en haut à droite coupe puis relance la musique ; elle reprend là où elle s’était arrêtée.
+1. Le bouton « Touchez pour ouvrir votre invitation » lance la musique ; les noms Joseph Marcel & Chantal apparaissent ensemble, puis « Scrollez vers le haut pour lire votre invitation ».
+2. Il n’y a volontairement aucun bouton pour couper la musique : tous les invités l’entendent (le volume et le mode silencieux du téléphone restent sous leur contrôle).
 3. Verrouillez l’écran ou changez d’application : la musique se met en pause, puis reprend au retour si elle était active.
 4. La rose éclot, les noms s’écrivent, les lianes poussent ; en remontant, tout se replie.
 5. Les deux boutons « Voir l’itinéraire » ouvrent Google Maps.
@@ -96,8 +96,7 @@ Autres hébergeurs possibles : Netlify (glisser-déposer du dossier sur app.netl
 ## 4. Bon à savoir
 
 - **iPhone et volume** : Safari sur iPhone ne laisse pas une page web régler le volume. La musique y démarre donc au volume de l’appareil, sans fondu. Sur Android et sur ordinateur, le fondu de 2,6 s et le volume doux fonctionnent.
-- **Lecture automatique** : aucun navigateur mobile n’autorise une musique à démarrer sans geste de l’invité. Le premier toucher sur le bouton d’entrée (ou sur le bouton rond) lance la musique. Rien n’essaie de contourner ces règles ni le mode silencieux de l’iPhone. L’invitation se parcourt aussi entièrement sans le son.
-- **Préférence mémorisée** : le choix musique activée/coupée est enregistré dans le navigateur de l’invité (`localStorage`, avec gestion des erreurs en navigation privée).
+- **Lecture automatique** : aucun navigateur mobile n’autorise une musique à démarrer sans geste de l’invité. C’est pourquoi l’invitation s’ouvre par un toucher, qui lance la musique pour tout le monde. Si le téléphone bloque la reprise après un passage sur Google Maps ou WhatsApp, une invite « Touchez pour reprendre la musique » apparaît et le prochain toucher la relance.
 - **Mouvement réduit** : si l’invité a activé « Réduire les animations », le jardin s’affiche directement en fleurs et la silhouette reste immobile, sans scène épinglée.
 - **La danse** : la silhouette est une marionnette en 7 calques (marié, bras levés, mariée, robe, voile, traîne, volutes) qui pivotent autour de leurs articulations selon le défilement, avec des lignes dorées et des particules. Elle se balance en continu comme un slow ; la robe, la traîne et le voile suivent avec un léger retard. Ce n’est pas une chorégraphie image par image.
 - **Confidentialité** : la page demande aux moteurs de recherche de ne pas l’indexer (`noindex`). Seules les personnes qui ont le lien la trouvent.

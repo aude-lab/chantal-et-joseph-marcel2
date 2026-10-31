@@ -3,33 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chantal &amp; Joseph Marcel · Le Jardin des Mariés</title>
-<meta name="description" content="Une histoire d’amour s’apprête à fleurir… Invitation au mariage de Chantal &amp; Joseph Marcel, le 26 décembre 2026.">
+<title>Joseph Marcel &amp; Chantal · Le Jardin des Mariés</title>
+<meta name="description" content="Une histoire d’amour s’apprête à fleurir… Invitation au mariage de Joseph Marcel &amp; Chantal, le 26 décembre 2026.">
 <!-- Invitation privée : on évite l’indexation par les moteurs de recherche -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#B8CBB5">
 <!-- Aperçu du lien dans WhatsApp (adresse du site Vercel) -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Chantal &amp; Joseph Marcel · Le Jardin des Mariés">
+<meta property="og:title" content="Joseph Marcel &amp; Chantal · Le Jardin des Mariés">
 <meta property="og:description" content="Une histoire d’amour s’apprête à fleurir… Vous êtes invités à notre mariage, le samedi 26 décembre 2026.">
 <meta property="og:image" content="https://chantal-et-joseph-marcel.vercel.app/assets/img/apercu-whatsapp.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://chantal-et-joseph-marcel.vercel.app/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23254B3B'/%3E%3Ccircle cx='32' cy='32' r='27' fill='none' stroke='%23E5D1A4' stroke-width='1.2'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='24' fill='%23A8843F' text-anchor='middle'%3EC%26amp;J%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23254B3B'/%3E%3Ccircle cx='32' cy='32' r='27' fill='none' stroke='%23E5D1A4' stroke-width='1.2'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='24' fill='%23A8843F' text-anchor='middle'%3EJ%26amp;C%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&family=Great+Vibes&family=Outfit:wght@400;500;600&display=swap">
 <link rel="preload" as="image" href="assets/img/couple-robe.webp" type="image/webp">
 <script>
   /* Choix du mode d’animation avant le premier affichage (évite tout saut de mise en page) */
-  document.documentElement.className = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim';
+  document.documentElement.className = (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'still' : 'anim') + ' gated';
 </script>
 <style>
 /* ==========================================================================
-   LE JARDIN DES MARIÉS — Chantal & Joseph Marcel — 26.12.2026
+   LE JARDIN DES MARIÉS — Joseph Marcel & Chantal — 26.12.2026
    Une seule feuille vert impérial, des ornements dorés, un jardin qui s’épanouit
    au fil du défilement et la silhouette dorée du couple qui danse en arrière-plan.
    ========================================================================== */
@@ -142,7 +142,26 @@ p{margin:0}
 }
 .cover-deco{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:visible}
 .reveal{pointer-events:none;padding-top:0;padding-bottom:0;padding-left:calc(env(safe-area-inset-left, 0px) + 18px);padding-right:calc(env(safe-area-inset-right, 0px) + 18px)}
-html.anim .stage{height:310vh;height:310svh}
+html.anim .stage{height:100vh;height:100svh}
+/* Tant que l’invitation n’est pas ouverte, rien d’autre n’est affiché (la musique démarre au toucher d’ouverture) */
+html.gated:not(.opened) #sheet,html.gated:not(.opened) #final{display:none}
+html.still.gated:not(.opened) .reveal{display:none}
+html.still.opened .cover{display:none}
+.swipe-hint{
+  position:absolute; z-index:3; left:0; right:0; bottom:calc(var(--safe-b) + 22px);
+  display:flex; flex-direction:column; align-items:center; gap:8px; padding:0 24px; text-align:center;
+  font-family:var(--serif); font-style:italic; font-weight:700; font-size:clamp(1.2rem, 1.05rem + .7vw, 1.4rem); line-height:1.25; color:var(--forest);
+  opacity:0; pointer-events:none; transition:opacity .9s ease;
+}
+.swipe-hint > span:last-child{padding:8px 18px;border-radius:999px;background:rgba(247,241,225,.72);box-shadow:0 0 0 1px rgba(138,106,46,.35), 0 10px 24px -14px rgba(30,52,40,.5)}
+html.still .swipe-hint{position:relative;bottom:auto;margin:0 0 calc(var(--safe-b) + 24px)}
+.swipe-hint.show{opacity:1}
+.swipe-arrows{position:relative;width:26px;height:26px}
+.swipe-arrows i{position:absolute;left:4px;width:18px;height:18px;border-left:2.5px solid var(--champagne);border-top:2.5px solid var(--champagne);transform:rotate(45deg)}
+.swipe-arrows i:first-child{top:2px}
+.swipe-arrows i:last-child{top:11px;opacity:.55}
+html.anim .swipe-hint.show .swipe-arrows{animation:swipeUp 1.6s ease-in-out infinite}
+@keyframes swipeUp{0%{transform:translateY(8px);opacity:.3}50%{transform:translateY(-4px);opacity:1}100%{transform:translateY(8px);opacity:.3}}
 html.anim .stage-sticky{position:sticky;top:0;height:100vh;height:100svh}
 html.anim .cover,html.anim .reveal{position:absolute;inset:0;min-height:0}
 
@@ -367,19 +386,10 @@ html.anim .final-sticky{position:sticky;top:0;height:100vh;height:100svh;min-hei
 .final-date{font-family:var(--serif);font-weight:700;font-size:clamp(1.1rem, 1rem + .5vw, 1.25rem);letter-spacing:.28em;padding-left:.28em;color:var(--champagne);font-variant-numeric:lining-nums}
 html.anim .final-text > *{opacity:0}
 
-/* ---------- Bouton musique ---------- */
-.music-toggle{
-  position:fixed; z-index:30;
-  top:calc(var(--safe-t) + 12px); right:calc(env(safe-area-inset-right, 0px) + 12px);
-  width:50px; height:50px; padding:0; border-radius:50%; cursor:pointer; display:grid; place-items:center;
-  --btn-bg:rgba(255,255,255,.82);
-  background:var(--btn-bg); color:var(--champagne); border:1px solid var(--hair);
-  box-shadow:inset 0 0 0 3px rgba(255,255,255,.9), inset 0 0 0 4px var(--hair-soft), 0 8px 20px -10px rgba(30,52,40,.45);
-  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
-}
-.music-toggle svg{width:24px;height:24px;overflow:visible}
+
+/* ---------- Invite « reprendre la musique » (après un passage sur Google Maps ou WhatsApp) ---------- */
 .music-hint{
-  position:fixed; z-index:30; top:calc(var(--safe-t) + 15px); right:calc(env(safe-area-inset-right, 0px) + 70px);
+  position:fixed; z-index:30; top:calc(var(--safe-t) + 14px); right:calc(env(safe-area-inset-right, 0px) + 12px);
   min-height:44px; padding:0 16px; border-radius:999px; cursor:pointer;
   font-family:var(--sans); font-size:.9375rem; font-weight:500; color:var(--cream);
   background:var(--bota); border:1px solid rgba(217,188,126,.7);
@@ -387,13 +397,7 @@ html.anim .final-text > *{opacity:0}
 }
 .music-hint[hidden]{display:none}
 html.anim .music-hint{animation:hintIn .5s ease both}
-@keyframes hintIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
-.music-toggle .slash-bg{stroke:var(--btn-bg)}
-.music-toggle .slash,.music-toggle .slash-bg{transition:opacity .3s ease}
-.music-toggle[aria-pressed="true"] .slash,.music-toggle[aria-pressed="true"] .slash-bg{opacity:0}
-.music-toggle::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(229,209,164,.55);opacity:0;pointer-events:none}
-html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46,.6);animation:halo 3.2s ease-out infinite}
-@keyframes halo{0%{opacity:.7;transform:scale(.92)}70%{opacity:0;transform:scale(1.22)}100%{opacity:0}}
+@keyframes hintIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -468,14 +472,6 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
   </defs>
 </svg>
 
-<!-- Bouton musique (toujours accessible) -->
-<button id="music-toggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Activer la musique">
-  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <use href="#i-note"/>
-    <path class="slash-bg" d="M3.6 3.6 20.4 20.4" stroke-width="4.4" stroke-linecap="round" fill="none"/>
-    <path class="slash" d="M3.6 3.6 20.4 20.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-  </svg>
-</button>
 
 <button id="music-hint" class="music-hint" type="button" hidden>Touchez pour reprendre la musique</button>
 
@@ -509,21 +505,22 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
         <svg class="cover-deco" id="cover-deco" aria-hidden="true" focusable="false"></svg>
         <div class="monogram" aria-hidden="true">
           <svg id="monogram-ring" viewBox="0 0 200 200" focusable="false"></svg>
-          <span class="monogram-text">C<span class="amp">&amp;</span>J</span>
+          <span class="monogram-text">J<span class="amp">&amp;</span>C</span>
         </div>
         <p class="cover-line lift">Une histoire d’amour s’apprête à fleurir…</p>
         <button class="enter-music" id="enter-music" type="button">
           <span class="disc" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><use href="#i-note"/></svg></span>
-          <span class="enter-label" id="enter-label">Touchez pour entrer dans notre jardin en musique</span>
+          <span class="enter-label" id="enter-label">Touchez pour ouvrir votre invitation</span>
         </button>
-        <p class="scroll-hint lift"><span>Faites défiler pour découvrir notre invitation</span><span class="line" aria-hidden="true"></span></p>
       </div>
+
+      <p class="swipe-hint lift" id="swipe-hint"><span class="swipe-arrows" aria-hidden="true"><i></i><i></i></span><span>Scrollez vers le haut pour lire votre invitation</span></p>
 
       <div class="reveal" id="reveal">
         <h1 class="names" id="names">
-          <span class="n n1">Chantal</span>
+          <span class="n n1">Joseph Marcel</span>
           <span class="n amp">&amp;</span>
-          <span class="n n2">Joseph Marcel</span>
+          <span class="n n2">Chantal</span>
         </h1>
       </div>
     </div>
@@ -536,7 +533,7 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     <section class="part" id="invitation" data-couple=".24" aria-label="Invitation">
       <div class="inner">
         <p class="invite-text lift">C’est avec une immense joie et un grand bonheur que les familles N’Goran et Amani ont l’honneur de vous convier à la célébration du mariage de leurs enfants,</p>
-        <p class="invite-names lift"><span>Chantal &amp;</span><span>Joseph Marcel</span></p>
+        <p class="invite-names lift"><span>Joseph Marcel &amp;</span><span>Chantal</span></p>
         <p class="invite-date lift">le 26 décembre 2026.</p>
       </div>
     </section>
@@ -685,8 +682,8 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
       <svg class="final-garden" id="final-garden" aria-hidden="true" focusable="false"></svg>
       <div class="final-text lift" id="final-text">
         <p class="final-quote">Nous avons hâte de célébrer ce merveilleux moment avec vous.</p>
-        <p class="final-names"><span>Chantal &amp;</span><span>Joseph Marcel</span></p>
-        <p class="final-mono" aria-hidden="true">C &amp; J</p>
+        <p class="final-names"><span>Joseph Marcel &amp;</span><span>Chantal</span></p>
+        <p class="final-mono" aria-hidden="true">J &amp; C</p>
         <p class="final-date"><span class="visually-hidden">26 décembre 2026</span><span aria-hidden="true">26 • 12 • 2026</span></p>
       </div>
     </div>
@@ -713,7 +710,8 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
   const MUSIC = {
     volume: 0.55,      // volume par défaut (0 à 1) — ignoré par iPhone, qui impose le volume de l’appareil
     fadeInMs: 2600,    // fondu d’entrée
-    loopEnd: 205.6     // le fichier finit par ~3 s de silence : on reboucle juste avant
+    loopStart: 0.55,   // le fichier commence par ~0,6 s de silence
+    loopEnd: 170.4     // et finit par ~3 s de silence : on reboucle juste avant
   };
 
   const SEED = 26122026; // graine fixe : le jardin est identique à chaque ouverture
@@ -1151,11 +1149,10 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     // Cibles calculées à partir du scroll ; le rendu les rejoint en douceur
     target(y) {
       if (anim) {
-        const sp = clamp((y - L.stageTop) / L.stageLen);
-        this.tgt.r = prog(sp, 0.32, 0.86);
-        const s0 = L.stageTop + L.stageLen * 0.8, s1 = L.finalTop + L.finalLen;
+        this.tgt.r = prog(Stage.p, 0.25, 0.9);
+        const s0 = 0, s1 = L.finalTop + L.finalLen;
         this.tgt.d = prog(y, s0, s1);
-      } else { this.tgt.r = 1; this.tgt.d = 0.18; }
+      } else { this.tgt.r = root.classList.contains('opened') ? 1 : 0; this.tgt.d = 0.18; }
       const yc = y + L.vh * 0.5;
       let v = 0.34;
       for (const z of L.zones) if (yc >= z.top && yc < z.bottom) { v = z.v; break; }
@@ -1297,16 +1294,30 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
       corner(R0 * 0.2, R0 * 0.4, 40);
       corner(W - R0 * 0.2, H - R0 * 0.4, 220);
     },
-    update(y) {
-      const p = anim ? clamp((y - L.stageTop) / L.stageLen) : 1;
-      if (this.G) this.G.update(p);
+    openedAt: 0, p: 0,
+    // Ouverture : la musique démarre, puis l’ovale, les bouquets et les deux noms apparaissent ensemble
+    open() {
+      if (root.classList.contains('opened')) return;
+      this.openedAt = performance.now();
+      root.classList.add('opened');
+      requestAnimationFrame(() => { buildAll(); requestFrame(); });
+    },
+    progress() {
+      if (!root.classList.contains('opened')) return 0;
+      return anim ? clamp((performance.now() - this.openedAt) / 4600) : 1;
+    },
+    update() {
+      const p = this.progress();
+      this.p = p;
+      if (this.G) this.G.update(lerp(0.17, 1, p) * (p > 0 ? 1 : 0));
+      $('#swipe-hint').classList.toggle('show', p >= 0.82);
       if (!anim) return;
-      const c = prog(p, 0.04, 0.2);
+      const c = prog(p, 0, 0.14);
       this.cover.style.opacity = (1 - c).toFixed(3);
       this.cover.style.transform = c ? `translate3d(0,${f1(-c * 34)}px,0)` : '';
       this.cover.style.visibility = c >= 0.999 ? 'hidden' : '';
-      const w = [prog(p, 0.44, 0.58), prog(p, 0.57, 0.63), prog(p, 0.61, 0.78)];
-      this.n.forEach((el, i) => el.style.setProperty('--w', w[i].toFixed(3)));
+      const w = prog(p, 0.2, 0.62);
+      this.n.forEach(el => el.style.setProperty('--w', w.toFixed(3)));
     }
   };
 
@@ -1806,12 +1817,12 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
 
   /* Les noms en calligraphie s’ajustent à la largeur disponible */
   function fitNames() {
-    const names = $('#names'), rv = $('#reveal'), n2 = $('.n2', names);
+    const names = $('#names'), rv = $('#reveal'), n1 = $('.n1', names), n2 = $('.n2', names);
     const cs = getComputedStyle(rv);
     const inner = rv.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     names.style.removeProperty('--names-size');
     const fs = parseFloat(getComputedStyle(n2).fontSize);
-    const w = n2.scrollWidth - fs * 0.64;
+    const w = Math.max(n1.scrollWidth, n2.scrollWidth) - fs * 0.64;
     if (w > inner * 0.96) names.style.setProperty('--names-size', `${Math.floor(fs * inner * 0.96 / w)}px`);
     const ft = $('#final-text');
     ft.style.removeProperty('--final-names-size');
@@ -1862,7 +1873,7 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
       const count = (form.querySelector('input[name="count"]:checked') || {}).value || '1';
       const lines = [
         'Bonjour,',
-        'Voici ma réponse à l’invitation au mariage de Chantal & Joseph Marcel (26 décembre 2026) :',
+        'Voici ma réponse à l’invitation au mariage de Joseph Marcel & Chantal (26 décembre 2026) :',
         '',
         `Nom : ${who}`,
         `Présence : ${pres === 'oui' ? 'Oui, avec joie' : 'Non, je ne pourrai pas venir'}`
@@ -1911,71 +1922,43 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
      Musique de fond
      ====================================================================== */
   const Music = {
-    audio: $('#bgm'), btn: $('#music-toggle'), enter: $('#enter-music'), label: $('#enter-label'), hint: $('#music-hint'),
-    KEY: 'jardin-des-maries:musique',
-    wants: false, fadeId: 0, stopping: false, broken: false, armed: null,
+    audio: $('#bgm'), enter: $('#enter-music'), hint: $('#music-hint'),
+    wants: false, fadeId: 0, armed: null,
     canVolume: (() => { try { const a = document.createElement('audio'); a.volume = 0.5; return Math.abs(a.volume - 0.5) < 0.01; } catch (_) { return false; } })(),
-    read() { try { return localStorage.getItem(this.KEY); } catch (_) { return null; } },
-    save(v) { try { localStorage.setItem(this.KEY, v); } catch (_) {} },
-    // L’affichage suit toujours l’état réel du lecteur
-    ui() {
-      const on = !this.audio.paused && !this.stopping;
-      this.btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      this.btn.setAttribute('aria-label', on ? 'Couper la musique' : 'Activer la musique');
-      this.label.textContent = on ? 'Entrer dans notre jardin' : 'Touchez pour entrer dans notre jardin en musique';
-    },
-    fade(to, ms, done) {
+    fade(to, ms) {
       cancelAnimationFrame(this.fadeId);
-      if (!this.canVolume) { if (done) done(); return; }
+      if (!this.canVolume) return;
       const a = this.audio, from = a.volume, t0 = performance.now();
       const step = now => {
         const t = clamp((now - t0) / ms);
         a.volume = clamp(from + (to - from) * t * t * (3 - 2 * t));
-        if (t < 1) this.fadeId = requestAnimationFrame(step); else if (done) done();
+        if (t < 1) this.fadeId = requestAnimationFrame(step);
       };
       this.fadeId = requestAnimationFrame(step);
     },
     async play(ms) {
       const a = this.audio;
-      this.stopping = false;
       this.disarm();
-      if (!a.paused) { this.ui(); this.fade(MUSIC.volume, 600); return true; }
+      if (!a.paused) { this.fade(MUSIC.volume, 600); return true; }
       try {
         if (a.error) a.load();
         if (this.canVolume) a.volume = 0;
         await a.play();
-        this.broken = false;
-        this.ui();
         this.fade(MUSIC.volume, ms);
         return true;
       } catch (_) {
-        this.ui();
         return false;
       }
     },
-    stop() {
-      this.stopping = true;
-      this.disarm();
-      this.ui();
-      this.fade(0, 450, () => {
-        if (this.stopping) { this.audio.pause(); this.stopping = false; }
-        if (this.canVolume) this.audio.volume = MUSIC.volume;
-        this.ui();
-      });
-    },
-    // Retour sur la carte : on relance si le navigateur l’autorise ; sinon, le prochain toucher la relance
-    resumeAfterReturn() {
-      if (!this.wants || !this.audio.paused) { this.ui(); return; }
-      this.play(1200).then(ok => { if (!ok) this.arm(); });
+    // Si le navigateur refuse la lecture, le prochain toucher sur la carte la lance
+    resume(ms) {
+      if (!this.wants || !this.audio.paused) return;
+      this.play(ms).then(ok => { if (!ok) this.arm(); });
     },
     arm() {
       if (this.armed) return;
       this.hint.hidden = false;
-      this.armed = e => {
-        if (e && e.target && e.target.closest && e.target.closest('#music-toggle')) return; // le bouton gère lui-même
-        if (this.wants && this.audio.paused) this.play(1200);
-        else this.disarm();
-      };
+      this.armed = () => { if (this.wants && this.audio.paused) this.play(1200); else this.disarm(); };
       ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, this.armed, true));
     },
     disarm() {
@@ -1986,54 +1969,32 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     },
     init() {
       const a = this.audio;
-      this.wants = this.read() === 'on';
       a.loop = true;
       if (this.canVolume) a.volume = MUSIC.volume;
       a.addEventListener('timeupdate', () => {
-        if (a.duration && MUSIC.loopEnd < a.duration - 0.2 && a.currentTime >= MUSIC.loopEnd) a.currentTime = 0;
+        if (a.duration && MUSIC.loopEnd < a.duration - 0.2 && a.currentTime >= MUSIC.loopEnd) a.currentTime = MUSIC.loopStart;
       });
-      ['play', 'playing', 'pause'].forEach(ev => a.addEventListener(ev, () => this.ui()));
-      a.addEventListener('error', () => { this.broken = true; this.ui(); this.btn.title = 'Musique indisponible'; }, true);
-      this.btn.addEventListener('click', () => {
-        if (!a.paused && !this.stopping) { this.wants = false; this.save('off'); this.stop(); }
-        else { this.wants = true; this.save('on'); this.play(MUSIC.fadeInMs); }
-      });
-      this.hint.addEventListener('click', () => { this.wants = true; this.save('on'); this.play(1200); });
+      this.hint.addEventListener('click', () => this.play(1200));
+      // Le toucher d’ouverture lance la musique pour tous, puis révèle les noms
       this.enter.addEventListener('click', () => {
-        if (a.paused || this.stopping) { this.wants = true; this.save('on'); this.play(MUSIC.fadeInMs); }
-        glideInto();
+        this.wants = true;
+        if (a.paused) {
+          if (!a.currentTime) { try { a.currentTime = MUSIC.loopStart; } catch (_) {} }
+          this.resume(MUSIC.fadeInMs);
+        }
+        Stage.open();
       });
       // Page quittée (Google Maps, WhatsApp…) : pause ; retour : reprise
-      const hide = () => { cancelAnimationFrame(this.fadeId); if (!a.paused) a.pause(); this.stopping = false; };
-      document.addEventListener('visibilitychange', () => { if (document.hidden) hide(); else this.resumeAfterReturn(); });
+      const hide = () => { cancelAnimationFrame(this.fadeId); if (!a.paused) a.pause(); };
+      document.addEventListener('visibilitychange', () => { if (document.hidden) hide(); else this.resume(1200); });
       window.addEventListener('pagehide', hide);
-      window.addEventListener('pageshow', e => { if (e.persisted) this.resumeAfterReturn(); });
-      window.addEventListener('focus', () => { if (!document.hidden && this.wants && a.paused && !this.armed) this.resumeAfterReturn(); });
+      window.addEventListener('pageshow', e => { if (e.persisted) this.resume(1200); });
+      window.addEventListener('focus', () => { if (!document.hidden && !this.armed) this.resume(1200); });
       if ('mediaSession' in navigator && window.MediaMetadata) {
-        try { navigator.mediaSession.metadata = new MediaMetadata({ title: 'Le Jardin des Mariés', artist: 'Chantal & Joseph Marcel' }); } catch (_) {}
+        try { navigator.mediaSession.metadata = new MediaMetadata({ title: 'Le Jardin des Mariés', artist: 'Joseph Marcel & Chantal' }); } catch (_) {}
       }
-      this.ui();
     }
   };
-
-  // Après le toucher d’entrée : un glissement doux ouvre l’invitation
-  function glideInto() {
-    if (!anim) { if (window.scrollY < 10) $('#reveal').scrollIntoView(); return; }
-    const start = window.scrollY, target = L.stageTop + L.stageLen * 0.62;
-    if (start >= target - 4) return;
-    const t0 = performance.now(), ms = 3200;
-    let stop = false;
-    const evs = ['wheel', 'touchstart', 'keydown', 'mousedown'];
-    const cancel = () => { stop = true; evs.forEach(ev => window.removeEventListener(ev, cancel)); };
-    evs.forEach(ev => window.addEventListener(ev, cancel, { passive: true }));
-    const step = now => {
-      if (stop) return;
-      const t = clamp((now - t0) / ms);
-      window.scrollTo(0, start + (target - start) * easeInOut(t));
-      if (t < 1) requestAnimationFrame(step); else cancel();
-    };
-    requestAnimationFrame(step);
-  }
 
   /* ======================================================================
      Boucle d’affichage
@@ -2059,6 +2020,7 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
       const y = Math.max(0, window.scrollY);
       const atEnd = y > L.finalTop - L.vh * 0.25;
       Couple.tp += dt * (atEnd ? 1.05 : 0.85);
+      if (Stage.p < 1 && root.classList.contains('opened')) Stage.update();
       Couple.target(y);
       Couple.step();
     }
@@ -2101,11 +2063,11 @@ html.anim .music-toggle[aria-pressed="true"]::after{border-color:rgba(138,106,46
     });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildAll);
     window.addEventListener('load', () => { measure(); safe(() => Garland.build()); measure(); requestFrame(); });
-    const onMotion = () => { anim = !mqReduce.matches; root.className = anim ? 'anim' : 'still'; buildAll(); };
+    const onMotion = () => { anim = !mqReduce.matches; root.classList.toggle('anim', anim); root.classList.toggle('still', !anim); buildAll(); };
     if (mqReduce.addEventListener) mqReduce.addEventListener('change', onMotion); else if (mqReduce.addListener) mqReduce.addListener(onMotion);
   }
 
-  try { init(); } catch (e) { console.error(e); root.className = 'still'; }
+  try { init(); } catch (e) { console.error(e); root.classList.remove('anim', 'gated'); root.classList.add('still'); }
 })();
 </script>
 </body>
