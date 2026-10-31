@@ -28,7 +28,7 @@ Reste à compléter :
 
 | Paramètre | Où | Quoi mettre |
 |---|---|---|
-| Adresse du site | `index.html`, balises `og:image` et `og:url` (lignes 16 à 19) | Préréglée sur `https://chantal-et-joseph-marcel.vercel.app`. Nommez le projet Vercel **chantal-et-joseph-marcel** pour obtenir exactement cette adresse ; sinon, remplacez-la par l’adresse obtenue. C’est ce qui affiche la belle image quand on colle le lien dans WhatsApp. |
+| Adresse du site | `index.html`, balises `og:image` et `og:url` (lignes 16 à 19) | Préréglée sur `https://joseph-marcel-et-chantal.vercel.app`. Nommez le projet Vercel **joseph-marcel-et-chantal** pour obtenir exactement cette adresse ; sinon, remplacez-la par l’adresse obtenue. C’est ce qui affiche la belle image quand on colle le lien dans WhatsApp. |
 
 Réglages facultatifs (objet `MUSIC`, en haut du script) :
 
@@ -85,7 +85,7 @@ Vercel affiche l’adresse finale, du type `https://jardin-des-maries-xxxx.verce
 
 ### Après le premier déploiement
 
-1. Si l’adresse obtenue n’est pas `chantal-et-joseph-marcel.vercel.app`, remplacez-la dans les balises `og:image` et `og:url`.
+1. Si l’adresse obtenue n’est pas `joseph-marcel-et-chantal.vercel.app`, remplacez-la dans les balises `og:image` et `og:url`.
 2. Redéployez (`npx vercel --prod` ou `git push`).
 3. Vérifiez l’aperçu du lien **avant** de l’envoyer aux 250 invités : WhatsApp garde en mémoire le premier aperçu qu’il voit pour une adresse.
 
