@@ -58,7 +58,7 @@ Puis ouvrez <http://localhost:8000>.
 3. Verrouillez l’écran ou changez d’application : la musique se met en pause, puis reprend au retour si elle était active.
 4. La rose éclot, les noms s’écrivent, les lianes poussent ; en remontant, tout se replie.
 5. Les deux boutons « Voir l’itinéraire » ouvrent Google Maps.
-6. Le formulaire ouvre WhatsApp vers le +225 07 67 69 36 26 avec le message prérempli ; l’invité appuie sur Envoyer.
+6. Le formulaire (nom + présence oui/non) ouvre WhatsApp vers le +225 07 67 69 36 26 avec le message prérempli ; l’invité appuie sur Envoyer.
 7. La silhouette dorée apparaît derrière les noms puis danse un slow : le couple se balance lentement, en continu, et danse seul au jardin final sans qu’on ait besoin de faire défiler.
 
 ---

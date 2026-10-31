@@ -656,15 +656,6 @@ html.anim .music-hint{animation:hintIn .5s ease both}
             </div>
           </fieldset>
 
-          <fieldset class="field" id="count-field" hidden>
-            <legend>Nombre de personnes présentes</legend>
-            <div class="counts">
-              <label class="count"><input type="radio" name="count" value="1" checked aria-label="1 personne">1</label>
-              <label class="count"><input type="radio" name="count" value="2" aria-label="2 personnes">2</label>
-              <label class="count"><input type="radio" name="count" value="3" aria-label="3 personnes">3</label>
-              <label class="count"><input type="radio" name="count" value="4" aria-label="4 personnes">4</label>
-            </div>
-          </fieldset>
 
           <p class="form-error" id="form-error" role="alert"></p>
           <a class="btn btn-primary" id="rsvp-submit" href="#" target="_blank" rel="noopener noreferrer">Confirmer ma présence</a>
@@ -1859,7 +1850,7 @@ html.anim .music-hint{animation:hintIn .5s ease both}
     // Le bouton est un vrai lien wa.me, tenu à jour pendant la saisie : touché du doigt,
     // il ouvre directement l’application WhatsApp (iPhone, Android, navigateur intégré de WhatsApp).
     const form = $('#rsvp-form'), name = $('#rsvp-name'), err = $('#form-error'), status = $('#form-status');
-    const submit = $('#rsvp-submit'), countField = $('#count-field');
+    const submit = $('#rsvp-submit');
     const number = String(RSVP_WHATSAPP_NUMBER).replace(/\D/g, '');
     const ready = number.length >= 8 && number.length <= 15;
     if (!ready) { submit.setAttribute('aria-disabled', 'true'); $('#config-note').hidden = false; $('#form-note').hidden = true; }
@@ -1870,7 +1861,6 @@ html.anim .music-hint{animation:hintIn .5s ease both}
       if (who.length < 2) return { error: 'Indiquez votre prénom et votre nom.', field: name };
       if (!pres) return { error: 'Indiquez si vous serez présent(e).', field: form.querySelector('input[name="presence"]') };
       if (!ready) return { error: 'L’envoi n’est pas encore activé : le numéro WhatsApp reste à renseigner.' };
-      const count = (form.querySelector('input[name="count"]:checked') || {}).value || '1';
       const lines = [
         'Bonjour,',
         'Voici ma réponse à l’invitation au mariage de Joseph Marcel & Chantal (26 décembre 2026) :',
@@ -1878,13 +1868,11 @@ html.anim .music-hint{animation:hintIn .5s ease both}
         `Nom : ${who}`,
         `Présence : ${pres === 'oui' ? 'Oui, avec joie' : 'Non, je ne pourrai pas venir'}`
       ];
-      if (pres === 'oui') lines.push(`Nombre de personnes : ${count}`);
       return { url: `https://wa.me/${number}?text=${encodeURIComponent(lines.join('\n'))}` };
     };
     const refresh = () => {
-      $$('.choice, .count', form).forEach(l => l.classList.toggle('is-checked', $('input', l).checked));
+      $$('.choice', form).forEach(l => l.classList.toggle('is-checked', $('input', l).checked));
       const pres = (form.querySelector('input[name="presence"]:checked') || {}).value;
-      countField.hidden = pres !== 'oui';
       submit.textContent = pres === 'non' ? 'Envoyer ma réponse' : 'Confirmer ma présence';
       const r = build();
       submit.setAttribute('href', r.url || '#');
