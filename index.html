@@ -303,7 +303,8 @@ html.anim .names .n{--w:0}
 
 .palette{--g:clamp(10px, 4vw, 24px);list-style:none;margin:6px auto 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g);max-width:26rem}
 .palette svg{width:100%;height:auto;overflow:visible}
-.palette-line{--g:clamp(10px, 4vw, 24px);display:grid;grid-template-columns:1fr var(--g) 1fr var(--g) 1fr;max-width:26rem;margin:16px auto 0;font-family:var(--serif);font-weight:700;font-size:clamp(1.45rem, 1.25rem + .8vw, 1.65rem);color:var(--ivory)}
+.palette-line{--g:clamp(10px, 4vw, 24px);display:grid;grid-template-columns:1fr var(--g) 1fr var(--g) 1fr;max-width:26rem;margin:16px auto 0;font-family:var(--serif);font-weight:700;font-size:min(1.55rem, 4.7vw);line-height:1.15;color:var(--ivory)}
+.palette-line > span:not(.dot){white-space:nowrap}
 .palette-line .dot{color:var(--gold);display:grid;place-items:center}
 
 .frame-card{
@@ -617,11 +618,11 @@ html.anim .music-hint{animation:hintIn .5s ease both}
         <h2 class="title lift" id="col-title">Les couleurs de notre célébration</h2>
         <svg class="orn" aria-hidden="true"><use href="#orn"/></svg>
         <ul class="palette" role="list">
-          <li><svg data-swatch="vert" viewBox="0 0 100 140" role="img" aria-label="Composition végétale verte : eucalyptus et olivier" focusable="false"></svg></li>
+          <li><svg data-swatch="clair" viewBox="0 0 100 140" role="img" aria-label="Composition végétale vert clair : eucalyptus et feuillage tendre" focusable="false"></svg></li>
           <li><svg data-swatch="dore" viewBox="0 0 100 140" role="img" aria-label="Composition végétale dorée : feuilles et baies dorées" focusable="false"></svg></li>
-          <li><svg data-swatch="blanc" viewBox="0 0 100 140" role="img" aria-label="Composition végétale blanche : rose ivoire et gypsophile" focusable="false"></svg></li>
+          <li><svg data-swatch="fonce" viewBox="0 0 100 140" role="img" aria-label="Composition végétale vert foncé : feuillage profond" focusable="false"></svg></li>
         </ul>
-        <p class="palette-line"><span>Vert</span><span class="dot" aria-hidden="true">•</span><span>Doré</span><span class="dot" aria-hidden="true">•</span><span>Blanc</span></p>
+        <p class="palette-line"><span>Vert clair</span><span class="dot" aria-hidden="true">•</span><span>Doré</span><span class="dot" aria-hidden="true">•</span><span>Vert foncé</span></p>
       </div>
     </section>
 
@@ -1541,16 +1542,23 @@ html.anim .music-hint{animation:hintIn .5s ease both}
       const rnd = rng(SEED + 120 + idx);
       const G = Growth();
       const kind = svg.dataset.swatch;
-      const fill = kind === 'vert' ? 'rgba(94,128,100,.16)' : kind === 'dore' ? 'rgba(176,140,69,.18)' : 'rgba(255,255,255,.42)';
+      const fill = kind === 'clair' ? 'rgba(232,240,226,.62)' : kind === 'dore' ? 'rgba(176,140,69,.18)' : 'rgba(37,75,59,.42)';
       S('path', { d: 'M8 137V52A42 42 0 0 1 92 52V137Z', fill, stroke: '#9C7A38', 'stroke-width': 0.9 }, svg);
       S('path', { d: 'M12.5 133V52.5a37.5 37.5 0 0 1 75 0V133Z', fill: 'none', stroke: '#A8843F', 'stroke-width': 0.6 }, svg);
       const base = 0.12 + idx * 0.12;
       const add = (x, y, a, t, draw) => { const g = place(svg, x, y, a); draw(g); G.add(g, base + t, 0.22); };
-      if (kind === 'vert') {
-        add(50, 128, -96, 0, g => eucalyptus(g, 84, rnd));
-        add(50, 128, -140, 0.08, g => leaf(g, 38, 6.4, PAL.olive));
+      if (kind === 'clair') {
+        const LIGHT = ['#B9CEB3', '#C8D9C2', '#A9C2A3', '#D3E1CE'];
+        add(50, 128, -96, 0, g => eucalyptus(g, 84, rnd, { colors: LIGHT, edge: '#8FAA8B', stem: '#8FAA8B' }));
+        add(50, 128, -140, 0.08, g => leaf(g, 38, 6.4, ['#C4D6BE', '#A6BFA1', '#E6EFE2']));
         add(50, 128, -42, 0.1, g => leaf(g, 36, 6, PAL.sage));
-        add(50, 128, -118, 0.14, g => leaf(g, 30, 10, PAL.deep));
+        add(50, 128, -118, 0.14, g => leaf(g, 30, 10, ['#B3C9AD', '#9CB797', '#DCE7D8']));
+      } else if (kind === 'fonce') {
+        const DARK = ['#2F5A3F', '#3A6A4A', '#264D35', '#44735A'];
+        add(50, 128, -84, 0, g => eucalyptus(g, 82, rnd, { colors: DARK, edge: '#1F3E2B', stem: '#2A4A36' }));
+        add(50, 128, -132, 0.08, g => leaf(g, 40, 7, ['#2E5A3E', '#1F4430', '#4F7A5C']));
+        add(50, 128, -48, 0.1, g => leaf(g, 38, 12, ['#365F45', '#244934', '#5D8467']));
+        add(50, 128, -104, 0.14, g => leaf(g, 30, 10, PAL.deep));
       } else if (kind === 'dore') {
         add(48, 130, -90, 0, g => {
           S('path', { d: 'M0 0Q40 6 78 -2', fill: 'none', stroke: '#A8843F', 'stroke-width': 1.1 }, g);
@@ -1563,7 +1571,7 @@ html.anim .music-hint{animation:hintIn .5s ease both}
         add(50, 70, -70, 0.12, g => berries(g, 22, rnd));
         add(48, 92, -150, 0.16, g => berries(g, 18, rnd));
         add(52, 100, -20, 0.18, g => berries(g, 18, rnd));
-      } else {
+      } else if (kind === 'blanc') {
         add(50, 118, -128, 0.04, g => gyps(g, 40, rnd));
         add(50, 118, -52, 0.06, g => gyps(g, 40, rnd));
         add(50, 100, 150, 0.02, g => leaf(g, 28, 9, PAL.sage));
